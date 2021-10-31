@@ -30,13 +30,38 @@ async function run() {
         await client.connect();
         const database = client.db('products')
         const itemsCollection = database.collection('items')
-        // get
+        // get post
+        // app.post('/items', async (req, res) => {
+        //     const item = req.body;
+        //     console.log('hitting post', item);
+        //     const result = await itemsCollection.insertOne(item);
+        //     console.log(result);
+        //     res.json(result)
+        // });
+
+
+        app.get(('/items/:id', async (req, res) => {
+            const id = req.params.id;
+            const qurey = { _id: ObjectId(id) }
+            const result = await itemsCollection.find(qurey);
+            res.send(result);
+        }))
+
+
+
+
+
         app.get('/items', async (req, res) => {
             const itemsCollection = database.collection('items')
             const cursor = itemsCollection.find({});
             const items = await cursor.toArray();
             res.send(items);
         })
+
+
+
+
+
 
     }
     finally {
@@ -56,15 +81,15 @@ run().catch(console.dir)
 //     client.close();
 // });
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World!')
-// })
+app.get('/', (req, res) => {
+    res.send('fartvip delivery!')
+})
 
 
 
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log('Running fast-vip !!!', port);
 })
 
